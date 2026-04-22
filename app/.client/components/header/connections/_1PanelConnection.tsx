@@ -1,10 +1,11 @@
+import type { Route } from '.react-router/types/app/+types/root';
 import { useStore } from '@nanostores/react';
-import { useFetcher, useRouteLoaderData } from '@remix-run/react';
 import classNames from 'classnames';
 import { format, formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale/zh-CN';
 import { motion } from 'framer-motion';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useFetcher, useRouteLoaderData } from 'react-router';
 import { toast } from 'sonner';
 import { Badge } from '~/.client/components/ui/Badge';
 import { Button } from '~/.client/components/ui/Button';
@@ -16,7 +17,6 @@ import {
   update1PanelConnection,
 } from '~/.client/stores/1panel';
 import { getChatId } from '~/.client/stores/ai-state';
-import type { ConnectionSettings } from '~/root';
 import type { _1PanelWebsite } from '~/types/1panel';
 import type { ApiResponse } from '~/types/global';
 import ConnectionBorder from './components/ConnectionBorder';
@@ -28,7 +28,7 @@ export default function _1PanelConnection({
   isDeploying: boolean;
   onDeploy: (siteId: number) => void;
 }) {
-  const rootData = useRouteLoaderData<{ connectionSettings?: ConnectionSettings }>('root');
+  const rootData = useRouteLoaderData<Route.ComponentProps['loaderData']>('root');
   const connectFetcher = useFetcher<ApiResponse>();
   const settingsFetcher = useFetcher<ApiResponse>();
 

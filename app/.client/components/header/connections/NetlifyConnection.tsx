@@ -1,9 +1,10 @@
+import type { Route } from '.react-router/types/app/+types/root';
 import { useStore } from '@nanostores/react';
-import { useFetcher, useRouteLoaderData } from '@remix-run/react';
 import classNames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale/zh-CN';
 import { useEffect, useMemo, useState } from 'react';
+import { useFetcher, useRouteLoaderData } from 'react-router';
 import { toast } from 'sonner';
 import { Badge } from '~/.client/components/ui/Badge';
 import { Button } from '~/.client/components/ui/Button';
@@ -15,7 +16,6 @@ import {
   updateNetlifyConnection,
 } from '~/.client/stores/netlify';
 import { logger } from '~/.client/utils/logger';
-import type { ConnectionSettings } from '~/root';
 import type { ApiResponse } from '~/types/global';
 import type { NetlifyBuild, NetlifyDeploy, NetlifySite } from '~/types/netlify';
 import ConnectionBorder from './components/ConnectionBorder';
@@ -30,7 +30,7 @@ interface SiteAction {
 }
 
 export default function NetlifyConnection() {
-  const rootData = useRouteLoaderData<{ connectionSettings?: ConnectionSettings }>('root');
+  const rootData = useRouteLoaderData<Route.ComponentProps['loaderData']>('root');
   const connectFetcher = useFetcher<ApiResponse>();
   const settingsFetcher = useFetcher<ApiResponse>();
 
@@ -112,7 +112,7 @@ export default function NetlifyConnection() {
     try {
       setIsActionLoading(true);
 
-      const response = await fetch(`/api/netlify/deploys/${deployId}/${action}`, {
+      const response = await fetch(`/api/netlify/actions/${deployId}/${action}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

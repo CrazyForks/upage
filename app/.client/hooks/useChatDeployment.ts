@@ -1,13 +1,14 @@
+import type { Route } from '.react-router/types/app/routes/+types/chat';
 import type { Deployment } from '@prisma/client';
-import { useRouteLoaderData } from '@remix-run/react';
 import { useCallback, useMemo } from 'react';
+import { useRouteLoaderData } from 'react-router';
 import type { DeploymentPlatform } from '~/types/deployment';
 
 /**
  * 获取 Chat 路由中的部署记录
  */
 export function useChatDeployment() {
-  const chatRouteData = useRouteLoaderData<{ deployments?: Deployment[] }>('routes/_layout.chat.$id');
+  const chatRouteData = useRouteLoaderData<Route.ComponentProps['loaderData']>('chat');
   const deployments = useMemo(() => {
     if (chatRouteData?.deployments) {
       return chatRouteData.deployments;
