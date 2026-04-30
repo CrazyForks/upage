@@ -85,8 +85,8 @@ API routes are grouped under `/api/*` with prefixes for domains: `chat`, `projec
 
 The core AI logic lives here:
 
-- **`chat-stream-text.ts`** — Main streaming text entry point. Builds system prompts, calls `streamText` from the AI SDK, and attaches tools.
-- **`tools/`** — AI SDK tools exposed to the model (Serper search, weather).
+- **`agents/page-builder.ts`** — Main agent runtime entry point. Prepares steps, controls the tool loop, and coordinates the page builder session.
+- **`agents/page-builder-tools.ts`** — Registers the page-builder toolset used by the main agent, including optional tools such as Serper search and weather.
 - **`prompts/prompts.ts`** — System prompts for page generation.
 - **`select-context.ts`** — Selects relevant context from chat history for the current request.
 - **`structured-page-snapshot.ts`** — Parses and structures the LLM's page output.

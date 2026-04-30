@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { appendPageSummaryContext, createElementEditPrompt } from './page-generation';
+import { appendPageSummaryContext, buildPageGenerationSystemPrompt, createElementEditPrompt } from './page-generation';
 
 describe('createElementEditPrompt', () => {
   it('should pin update scope to the selected domId', () => {
@@ -29,5 +29,21 @@ describe('appendPageSummaryContext', () => {
     expect(prompt).toContain('<snapshot_outline>outline</snapshot_outline>');
     expect(prompt).toContain('PAGE SUMMARY DETAILED');
     expect(prompt).toContain('<snapshot_detailed>detailed</snapshot_detailed>');
+  });
+});
+
+describe('buildPageGenerationSystemPrompt', () => {
+  it('should require primary content to stay visible without script', () => {
+    const prompt = buildPageGenerationSystemPrompt({
+      summary: '',
+      pageSummaryOutline: '',
+      pageSummaryDetailed: '',
+      context: {},
+      designMd: '# Design System',
+    });
+
+    expect(prompt).toContain('页面在没有任何 Script 执行时也必须可正常预览');
+    expect(prompt).toContain('不能依赖脚本在稍后把主要内容从隐藏切换为显示');
+    expect(prompt).toContain('不要把首屏、正文主体、关键信息卡片、主要 CTA 做成');
   });
 });
